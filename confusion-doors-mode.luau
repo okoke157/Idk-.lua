@@ -190,7 +190,7 @@ coroutine.wrap(function()
                     Rebounding = {Enabled = false, Type = "Ambush", Min = 20, Max = 30, Delay=3},
                     Damage = {Enabled = true, Range = 20, Amount = 100},
                     Crucifixion = {Enabled = true, Range = 40, Resist = self and true or false, Break = true}, -- Đã tối ưu logic
-                    Death = {Type = "Guiding", Hints = {"Bạn đã chết vì.....", "Tôi.. không biết ..?", "Tôi.. không chắc làm thế nào để giúp được, Tôi vô cùng xin lỗi...", "Lần sau hãy cẩn thận hơn nhé.."}, Cause = ""}
+                    Death = {Type = "Guiding", Hints = {"Bạn đã chết vì.....", "Tôi.. không biết ..?", "Tôi.. không chắc làm thế nào để giúp được, Tôi vô cùng xin lỗi...", "Lần sau hãy cẩn thận hơn nhé..", "Hình nó tên là A-.."}, Cause = "A-???"}
                 })
                 e:Run()
             end
