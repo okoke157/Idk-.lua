@@ -5,18 +5,18 @@ local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Xóa giao diện cũ nếu có để tránh bị trùng lặp
+-- Xóa giao diện cũ nếu có
 if playerGui:FindFirstChild("MobileSprintGui") then
 	playerGui.MobileSprintGui:Destroy()
 end
 
--- 1. TẠO GIAO DIỆN ẢO TRỰC TIẾP BẰNG SCRIPT
+-- 1. TẠO GIAO DIỆN
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MobileSprintGui"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
--- Nút bấm Sprint (Nằm ở góc phải)
+-- Nút bấm Sprint ở góc phải
 local sprintButton = Instance.new("TextButton")
 sprintButton.Name = "SprintButton"
 sprintButton.Size = UDim2.new(0, 100, 0, 100)
@@ -26,7 +26,7 @@ sprintButton.BackgroundTransparency = 0.4
 sprintButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 sprintButton.TextSize = 18
 sprintButton.Font = Enum.Font.SourceSansBold
-sprintButton.Text = "Sprint"
+sprintButton.Text = "CHẠY"
 sprintButton.Active = true
 sprintButton.Parent = screenGui
 
@@ -34,7 +34,7 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(1, 0)
 corner.Parent = sprintButton
 
--- Thanh thể lực (Stamina Bar) đã được dịch chuyển xuống góc phải, nằm ngay trên nút CHẠY
+-- Thanh thể lực ở góc phải
 local barBackground = Instance.new("Frame")
 barBackground.Name = "BarBackground"
 barBackground.Size = UDim2.new(0, 120, 0, 10)
@@ -58,7 +58,7 @@ local fillCorner = Instance.new("UICorner")
 fillCorner.CornerRadius = UDim.new(0.5, 0)
 fillCorner.Parent = barFill
 
--- 2. LOGIC XỬ LÝ CHẠY VÀ THỂ LỰC
+-- 2. LOGIC XỬ LÝ CHẠY
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
@@ -71,36 +71,34 @@ local normalSpeed = 16
 local sprintSpeed = 30
 local maxStamina = 100000
 local currentStamina = 100000
-local drainRate = 250
+local drainRate = 2500
 local regenRate = 20000
 
 local shiftPressed = false
 local mobilePressed = false
 
--- Chỉ hiện nút trên thiết bị cảm ứng điện thoại
 if UserInputService.TouchEnabled then
 	sprintButton.Visible = true
 else
 	sprintButton.Visible = false
 end
 
--- Bắt sự kiện chạm trên Mobile Executor
-sprintButton.MouseButton1Down:Connect(function()
-	mobilePressed = true
-	sprintButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+-- Dùng InputBegan/InputEnded trên UI để nhận diện cảm ứng chuẩn xác nhất trên Mobile
+sprintButton.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		mobilePressed = true
+		sprintButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+	end
 end)
 
-sprintButton.MouseButton1Up:Connect(function()
-	mobilePressed = false
-	sprintButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+sprintButton.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+		mobilePressed = false
+		sprintButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	end
 end)
 
-sprintButton.TouchLeave:Connect(function()
-	mobilePressed = false
-	sprintButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-end)
-
--- Xử lý phím Shift trên PC (nếu chơi giả lập/bàn phím)
+-- Phím Shift trên bàn phím (nếu có)
 UserInputService.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.LeftShift then
 		shiftPressed = true
@@ -113,7 +111,7 @@ UserInputService.InputEnded:Connect(function(input)
 	end
 end)
 
--- Vòng lặp cập nhật tốc độ và thể lực
+-- Cập nhật tốc độ liên tục
 RunService.RenderStepped:Connect(function(dt)
 	if not humanoid or humanoid.Health <= 0 then return end
 
