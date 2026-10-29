@@ -26,28 +26,27 @@ local sprintButton = gui:WaitForChild("SprintButton")
 local barBackground = gui:WaitForChild("BarBackground")
 local barFill = barBackground:WaitForChild("BarFill")
 
--- === KIỂM TRA LOẠI THIẾT BỊ ===
-local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
-
-if isMobile then
-	-- Nếu là Điện thoại: Hiển thị nút bấm ảo trên màn hình
+-- === KIỂM TRA THIẾT BỊ HOẶC LUÔN HIỆN NÚT NẾU CHƠI MOBILE ===
+-- Kiểm tra đơn giản bằng TouchEnabled để tránh bị ẩn nhầm trên điện thoại
+if UserInputService.TouchEnabled then
 	sprintButton.Visible = true
 else
-	-- Nếu là Máy tính (PC): Ẩn nút bấm ảo đi vì người chơi dùng phím Shift
 	sprintButton.Visible = false
 end
 
--- Xử lý nút bấm trên Điện thoại
-sprintButton.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		mobilePressed = true
-	end
+-- Xử lý nút bấm trên Điện thoại dùng .MouseButton1Down / .MouseButton1Up (hoặc .Activated)
+-- Cách này bắt sự kiện click/chạm trên giao diện UI chuẩn xác hơn InputBegan
+sprintButton.MouseButton1Down:Connect(function()
+	mobilePressed = true
 end)
 
-sprintButton.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-		mobilePressed = false
-	end
+sprintButton.MouseButton1Up:Connect(function()
+	mobilePressed = false
+end)
+
+-- Phòng hờ khi người chơi trượt ngón tay ra khỏi nút thì vẫn dừng chạy
+sprintButton.MouseLeave:Connect(function()
+	mobilePressed = false
 end)
 
 -- Xử lý bàn phím Máy tính (Left Shift)
