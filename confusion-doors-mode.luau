@@ -7,7 +7,7 @@ end
 
 safeCaption("Bạn đã thành công chơi Confusion Mode v0.1")
 task.wait(2)
-safeCaption("Ý tưởng: **UnknownUser2450**, Xin cảm ơn cho các nhà sản xuất thực thể")
+safeCaption("Ý tưởng: UnknownUser2450, Xin cảm ơn cho các nhà sản xuất thực thể")
 task.wait(2)
 safeCaption("Cái mode này có thể bị lỗi")
 task.wait(2)
@@ -15,7 +15,7 @@ safeCaption("p°/•£€~♤•>~£`□□^_")
 task.wait(2)
 safeCaption("£••££~*•£•££><^^♤&&")
 task.wait(2)
-safeCaption("Việt hóa bởi **viet09544** và **zombir_man**")
+safeCaption("Việt hóa bởi viet09544 và zombir_man")
 
 pcall(function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
