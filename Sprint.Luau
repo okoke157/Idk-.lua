@@ -26,16 +26,15 @@ local sprintButton = gui:WaitForChild("SprintButton")
 local barBackground = gui:WaitForChild("BarBackground")
 local barFill = barBackground:WaitForChild("BarFill")
 
--- === KIỂM TRA THIẾT BỊ HOẶC LUÔN HIỆN NÚT NẾU CHƠI MOBILE ===
--- Kiểm tra đơn giản bằng TouchEnabled để tránh bị ẩn nhầm trên điện thoại
+-- Bật hiển thị nút trên thiết bị di động
 if UserInputService.TouchEnabled then
 	sprintButton.Visible = true
 else
 	sprintButton.Visible = false
 end
 
--- Xử lý nút bấm trên Điện thoại dùng .MouseButton1Down / .MouseButton1Up (hoặc .Activated)
--- Cách này bắt sự kiện click/chạm trên giao diện UI chuẩn xác hơn InputBegan
+-- === TỐI ƯU RIÊNG CHO MOBILE EXECUTOR ===
+-- Dùng kết hợp nhiều sự kiện chạm để đảm bảo Delta X nhận diện được thao tác của bạn
 sprintButton.MouseButton1Down:Connect(function()
 	mobilePressed = true
 end)
@@ -44,7 +43,11 @@ sprintButton.MouseButton1Up:Connect(function()
 	mobilePressed = false
 end)
 
--- Phòng hờ khi người chơi trượt ngón tay ra khỏi nút thì vẫn dừng chạy
+sprintButton.TouchTap:Connect(function()
+	-- Hỗ trợ thêm cú chạm nhanh trên màn hình điện thoại
+	mobilePressed = not mobilePressed
+end)
+
 sprintButton.MouseLeave:Connect(function()
 	mobilePressed = false
 end)
