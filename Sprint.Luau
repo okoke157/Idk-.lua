@@ -26,7 +26,7 @@ sprintButton.BackgroundTransparency = 0.4
 sprintButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 sprintButton.TextSize = 18
 sprintButton.Font = Enum.Font.SourceSansBold
-sprintButton.Text = "CHẠY"
+sprintButton.Text = "Sprint"
 sprintButton.Active = true
 sprintButton.Parent = screenGui
 
@@ -69,10 +69,10 @@ end)
 
 local normalSpeed = 16
 local sprintSpeed = 30
-local maxStamina = 1000
-local currentStamina = 1000
-local drainRate = 25
-local regenRate = 200
+local maxStamina = 100000
+local currentStamina = 100000
+local drainRate = 250
+local regenRate = 20000
 
 local shiftPressed = false
 local mobilePressed = false
