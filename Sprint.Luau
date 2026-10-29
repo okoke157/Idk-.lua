@@ -13,10 +13,10 @@ end)
 
 local normalSpeed = 16
 local sprintSpeed = 30
-local maxStamina = 1000
-local currentStamina = 1000
-local drainRate = 25
-local regenRate = 200
+local maxStamina = 100000
+local currentStamina = 100000
+local drainRate = 250
+local regenRate = 20000
 
 local shiftPressed = false
 local mobilePressed = false
