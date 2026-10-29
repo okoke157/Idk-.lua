@@ -12,11 +12,11 @@ player.CharacterAdded:Connect(function(newChar)
 end)
 
 local normalSpeed = 16
-local sprintSpeed = 26
-local maxStamina = 100
-local currentStamina = 100
-local drainRate = 35
-local regenRate = 25
+local sprintSpeed = 30
+local maxStamina = 1000
+local currentStamina = 1000
+local drainRate = 25
+local regenRate = 200
 
 local shiftPressed = false
 local mobilePressed = false
