@@ -5,18 +5,20 @@ local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Xóa giao diện cũ nếu có
+-- Xóa giao diện Sprint cũ nếu có để tránh bị trùng
 if playerGui:FindFirstChild("MobileSprintGui") then
 	playerGui.MobileSprintGui:Destroy()
 end
 
--- 1. TẠO GIAO DIỆN
+-- ==========================================
+-- 1. TẠO GIAO DIỆN SPRINT (GÓC PHẢI)
+-- ==========================================
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MobileSprintGui"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
--- Nút bấm Sprint ở góc phải
+-- Nút bấm Sprint
 local sprintButton = Instance.new("TextButton")
 sprintButton.Name = "SprintButton"
 sprintButton.Size = UDim2.new(0, 100, 0, 100)
@@ -34,7 +36,7 @@ local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(1, 0)
 corner.Parent = sprintButton
 
--- Thanh thể lực ở góc phải
+-- Thanh thể lực (Stamina Bar) nằm phía trên nút CHẠY
 local barBackground = Instance.new("Frame")
 barBackground.Name = "BarBackground"
 barBackground.Size = UDim2.new(0, 120, 0, 10)
@@ -58,7 +60,9 @@ local fillCorner = Instance.new("UICorner")
 fillCorner.CornerRadius = UDim.new(0.5, 0)
 fillCorner.Parent = barFill
 
--- 2. LOGIC XỬ LÝ CHẠY
+-- ==========================================
+-- 2. LOGIC XỬ LÝ SPRINT & THỂ LỰC
+-- ==========================================
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
@@ -68,22 +72,23 @@ player.CharacterAdded:Connect(function(newChar)
 end)
 
 local normalSpeed = 16
-local sprintSpeed = 30
-local maxStamina = 100000
-local currentStamina = 100000
-local drainRate = 2500
-local regenRate = 20000
+local sprintSpeed = 22 -- Đặt mức 22 để chống giật lùi vị trí (Rubberbanding)
+local maxStamina = 1000
+local currentStamina = 1000
+local drainRate = 25
+local regenRate = 200
 
 local shiftPressed = false
 local mobilePressed = false
 
+-- Chỉ hiện nút trên thiết bị cảm ứng
 if UserInputService.TouchEnabled then
 	sprintButton.Visible = true
 else
 	sprintButton.Visible = false
 end
 
--- Dùng InputBegan/InputEnded trên UI để nhận diện cảm ứng chuẩn xác nhất trên Mobile
+-- Bắt sự kiện chạm trên Mobile
 sprintButton.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
 		mobilePressed = true
@@ -98,7 +103,7 @@ sprintButton.InputEnded:Connect(function(input)
 	end
 end)
 
--- Phím Shift trên bàn phím (nếu có)
+-- Phím Shift trên PC (nếu dùng giả lập)
 UserInputService.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.LeftShift then
 		shiftPressed = true
@@ -111,7 +116,7 @@ UserInputService.InputEnded:Connect(function(input)
 	end
 end)
 
--- Cập nhật tốc độ liên tục
+-- Vòng lặp cập nhật tốc độ và thể lực
 RunService.RenderStepped:Connect(function(dt)
 	if not humanoid or humanoid.Health <= 0 then return end
 
