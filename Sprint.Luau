@@ -28,7 +28,7 @@ sprintButton.BackgroundTransparency = 0.4
 sprintButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 sprintButton.TextSize = 18
 sprintButton.Font = Enum.Font.SourceSansBold
-sprintButton.Text = "CHẠY"
+sprintButton.Text = "Sprint"
 sprintButton.Active = true
 sprintButton.Parent = screenGui
 
