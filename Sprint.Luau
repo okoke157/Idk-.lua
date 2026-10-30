@@ -21,7 +21,7 @@ screenGui.Parent = playerGui
 -- Nút bấm Sprint
 local sprintButton = Instance.new("TextButton")
 sprintButton.Name = "SprintButton"
-sprintButton.Size = UDim2.new(0, 100, 0, 100)
+sprintButton.Size = UDim2.new(0, 70, 0, 70)
 sprintButton.Position = UDim2.new(1, -140, 0.55, -50)
 sprintButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 sprintButton.BackgroundTransparency = 0.4
@@ -73,10 +73,10 @@ end)
 
 local normalSpeed = 16
 local sprintSpeed = 22 -- Đặt mức 22 để chống giật lùi vị trí (Rubberbanding)
-local maxStamina = 1000
-local currentStamina = 1000
-local drainRate = 25
-local regenRate = 200
+local maxStamina = 100000
+local currentStamina = 100000
+local drainRate = 2500
+local regenRate = 20000
 
 local shiftPressed = false
 local mobilePressed = false
